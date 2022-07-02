@@ -1,21 +1,21 @@
 library(dplyr)
 
 ## creating tables from txt file
-features <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/features.txt", col.names = c("n", "functions"))
+features <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/features.txt", col.names = c("n", "functions"))
 
-activities <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/activity_labels.txt", col.names = c("code", "activity"))
+activities <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/activity_labels.txt", col.names = c("code", "activity"))
 
-subject_test <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
+subject_test <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
 
-x_test <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/test/X_test.txt", col.names = features$functions)
+x_test <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/test/X_test.txt", col.names = features$functions)
 
-y_test <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/test/y_test.txt", col.names = "code")
+y_test <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/test/y_test.txt", col.names = "code")
 
-subject_train <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
+subject_train <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
 
-x_train <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/train/X_train.txt", col.names = features$functions)
+x_train <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/train/X_train.txt", col.names = features$functions)
 
-y_train <- read.table("~/getting-and-cleaning-project/UCI HAR Dataset/train/y_train.txt", col.names = "code")
+y_train <- read.table("~/project/Getting-and-Cleaning-course-project/UCI HAR Dataset/train/y_train.txt", col.names = "code")
 
 ## 1: create one dataset by merging tables together 
 
@@ -29,10 +29,11 @@ merged_data <- cbind(x, y, subject)
 TidyData <- select(merged_data, subject, code, contains("mean"), contains("std"))
 
 ## 3: Uses descriptive activity names to name the activities in the data set
- 
-TidyData$code <- activities[TidyData$code, 2] 
- 
+
+TidyData$code <- activities[TidyData$code, 2]
+
 ## 4: Appropriately labels the data set with descriptive variable names. 
+
 names(TidyData)[2] = "activity"
 names(TidyData)<-gsub("Acc", "Accelerometer", names(TidyData))
 names(TidyData)<-gsub("Gyro", "Gyroscope", names(TidyData))
@@ -54,7 +55,5 @@ FinalData <- TidyData %>%
   summarise_all(funs(mean))
 
 write.table(FinalData, "FinalData.txt", row.name=FALSE)
-
-
 
 
